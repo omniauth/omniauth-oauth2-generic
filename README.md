@@ -19,13 +19,16 @@ gem 'omniauth-oauth2-generic'
 
 Include this gem in your client app [as you would any OmniAuth strategy](https://github.com/omniauth/omniauth#getting-started), by adding it to the middleware stack:
 
-**In Rails:**
+**In Rails: (minimum configuration)**
 ```ruby
 # /config/initializers/omniauth.rb
   Rails.application.config.middleware.use OmniAuth::Builder do
     provider :oauth2_generic,
-      ENV['OAUTH_APP_ID'], ENV['OAUTH_APP_SECRET'],
-      oauth_host: 'http://localhost:3000' # Host to direct OAuth requests to
+      "Your_OAuth_App_ID", "Your_OAuth_App_Secret",
+      client_options: {
+        site: 'https://your_oauth_server', # including port if necessary
+        user_info_path: '/api/path/to/fetch/current_user/info'
+      }
   end
 ```
 
@@ -38,19 +41,33 @@ gitlab_rails['omniauth_auto_sign_in_with_provider'] = 'oauth2_generic'
 gitlab_rails['omniauth_block_auto_created_users'] = false
 gitlab_rails['omniauth_providers'] = [
   {
-    "name" => "oauth2_genereic",
-    "app_id" => "client_app_id",
-    "app_secret" => "client_app_secret",
-    "args" => {oauth_host: "http://optional.test.host"}
+    'name' => 'oauth2_genereic',
+    'app_id' => 'oauth_client_app_id',
+    'app_secret' => 'oauth_client_app_secret',
+    'args' => {
+      client_options: {
+        'site' => 'https://your_oauth_server', # including port if necessary
+        'user_info_path' => '/api/path/to/fetch/current_user/info'
+      }
+    }
   }
 ]
 ````
 
-## Development
+Now if you visit "http://yourserver/auth/oauth2generic", you should be directed to log in with your OAuth2 server.
 
-**Boilerplate:**
+## Configuration Options
 
-After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+Details about the available configuration options are provided as comments in [the OAuth2Generic class](lib/omniauth/strategies/oauth2_generic.rb).
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+Configuration options for this gem are separated into two categories (each provided as its own hash):
 
+* **client_options** - options for configuring the OAuth client to point to the right URLs
+* **user_attributes** - a list of [standard Omniauth user attributes](https://github.com/omniauth/omniauth/wiki/auth-hash-schema#schema-10-and-later) and the names your OAuth server uses, if not the standard names (this hash defaults to using all the standard names)
+
+Both of these hashes have default values and your provided configuration is merged into the default, so you do no have to re-specify nested default options (although you will need to provide at least `site` and `user_info_path` in `client_options`, unless you want to use the default/example gitlab.com configuration).
+
+In addition to those hashes, you may also specify:
+* **redirect_url** - The URL the client will be directed to after authentication. Defaults to `http://yourserver/auth/oauth2generic/callback`
+
+  Note: Your OAuth server may restrict redirects to a specific list of URLs. 
