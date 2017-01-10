@@ -27,7 +27,7 @@ Include this gem in your client app [as you would any OmniAuth strategy](https:/
       "Your_OAuth_App_ID", "Your_OAuth_App_Secret",
       client_options: {
         site: 'https://your_oauth_server', # including port if necessary
-        user_info_endpoint: '/api/path/to/fetch/current_user/info'
+        user_info_url: '/api/path/to/fetch/current_user/info'
       }
   end
 ```
@@ -47,7 +47,7 @@ gitlab_rails['omniauth_providers'] = [
     'args' => {
       client_options: {
         'site' => 'https://your_oauth_server', # including port if necessary
-        'user_info_endpoint' => '/api/path/to/fetch/current_user/info'
+        'user_info_url' => '/api/path/to/fetch/current_user/info'
       }
     }
   }
@@ -63,7 +63,7 @@ Details about the available configuration options are provided as comments in [t
 Configuration options for this gem are:
 
 * **client_options** - A Hash containing options for configuring the OAuth client to point to the right URLs
-* **user_response_structure** - A Hash containing paths to various attributes of the user in the response that your OAuth server returns from the `user_info_endpoint` specified in the `client_options`.
+* **user_response_structure** - A Hash containing paths to various attributes of the user in the response that your OAuth server returns from the `user_info_url` specified in the `client_options`.
   * **root_path** - An Array containing each key in the path to the node that contains the user attributes (i.e. `['data', 'attributes']` for a JsonAPI-formatted response)
   * **id_path** - A String containing the name, or Array containing the keys in the path to the node that contains the user's ID (i.e. `['data', 'id']` for a JsonAPI-formatted response). Default: `'id'` (string values are assumed to be relative to the `root_path`)
   * **attributes** - A Hash containing [standard Omniauth user attributes](https://github.com/omniauth/omniauth/wiki/auth-hash-schema#schema-10-and-later) and the names/paths to them in the response, if not the standard names (this hash defaults to looking for the standard names under the specified `root_path`)
