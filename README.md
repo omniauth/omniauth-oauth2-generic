@@ -28,7 +28,8 @@ Include this gem in your client app [as you would any OmniAuth strategy](https:/
       client_options: {
         site: 'https://your_oauth_server', # including port if necessary
         user_info_url: '/api/path/to/fetch/current_user/info'
-      }
+      },
+      name: 'joes_service' # optional - alternate name for the strategy (appears in URLs)
   end
 ```
 
@@ -48,13 +49,18 @@ gitlab_rails['omniauth_providers'] = [
       client_options: {
         'site' => 'https://your_oauth_server', # including port if necessary
         'user_info_url' => '/api/path/to/fetch/current_user/info'
-      }
+      },
+      # optionally, you can add the following two lines to "white label" the display name
+      # of this strategy (show in urls and Gitlab login buttons)
+      # If you do this, you must also replace oauth2_generic, everywhere it appears above, with the new name. 
+      name: 'joes_service', # display name for this strategy
+      strategy_class: "OmniAuth::Strategies::OAuth2Generic" # Devise-specific config option Gitlab uses to find renamed strategy
     }
   }
 ]
 ````
 
-Now if you visit "http://yourserver/auth/oauth2generic", you should be directed to log in with your OAuth2 server.
+Now if you visit "http://yourserver/auth/oauth2_generic", you should be directed to log in with your OAuth2 server.
 
 ## Configuration Options
 
@@ -69,8 +75,9 @@ Configuration options for this gem are:
   * **attributes** - A Hash containing [standard Omniauth user attributes](https://github.com/omniauth/omniauth/wiki/auth-hash-schema#schema-10-and-later) and the names/paths to them in the response, if not the standard names (this hash defaults to looking for the standard names under the specified `root_path`)
   
     **Note:** The entire raw response will also be returned in the `['extra']['raw_info']` field of the OmniAuth auth hash, regardless of the value of this option.
-* **redirect_url** - The URL the client will be directed to after authentication. Defaults to `http://yourserver/auth/oauth2generic/callback`
+* **redirect_url** - The URL the client will be directed to after authentication. Defaults to `http://yourserver/auth/oauth2_generic/callback`
 
   **Note:** Your OAuth server may restrict redirects to a specific list of URLs.
+* **name** - A String.  If set, this changes the name of the strategy used in the URLs and sometimes other places (the login button in Gitlab, for instance)
   
 The hash options have default values for all keys, and your provided configuration is merged into the default, so you do not have to re-specify nested default options (although you will need to provide at least `site` and `user_info_url` in `client_options`, unless you want to use the default/example gitlab.com configuration). 
