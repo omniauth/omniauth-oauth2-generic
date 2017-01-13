@@ -19,9 +19,9 @@ gem 'omniauth-oauth2-generic'
 
 Include this gem in your client app [as you would any OmniAuth strategy](https://github.com/omniauth/omniauth#getting-started), by adding it to the middleware stack:
 
-**In Rails: (minimum configuration)**
+**Rails Example: (minimum configuration)**
 ```ruby
-# /config/initializers/omniauth.rb
+# config/initializers/omniauth.rb
   Rails.application.config.middleware.use OmniAuth::Builder do
     provider :oauth2_generic,
       "Your_OAuth_App_ID", "Your_OAuth_App_Secret",
@@ -29,16 +29,16 @@ Include this gem in your client app [as you would any OmniAuth strategy](https:/
         site: 'https://your_oauth_server', # including port if necessary
         user_info_url: '/api/path/to/fetch/current_user/info'
       },
-      name: 'joes_service' # optional - alternate name for the strategy (appears in URLs)
+      name: 'Satorix' # optional - alternate name for the strategy (appears in URLs)
   end
 ```
 
-**In Gitlab Config:**
+**Gitlab Config Example:**
 
 ```ruby
+# /etc/gitlab/gitlab.rb
 gitlab_rails['omniauth_enabled'] = true
 gitlab_rails['omniauth_allow_single_sign_on'] = ['oauth2_generic']
-gitlab_rails['omniauth_auto_sign_in_with_provider'] = 'oauth2_generic'
 gitlab_rails['omniauth_block_auto_created_users'] = false
 gitlab_rails['omniauth_providers'] = [
   {
@@ -51,16 +51,16 @@ gitlab_rails['omniauth_providers'] = [
         'user_info_url' => '/api/path/to/fetch/current_user/info'
       },
       # optionally, you can add the following two lines to "white label" the display name
-      # of this strategy (show in urls and Gitlab login buttons)
+      # of this strategy (appears in urls and Gitlab login buttons)
       # If you do this, you must also replace oauth2_generic, everywhere it appears above, with the new name. 
-      name: 'joes_service', # display name for this strategy
+      name: 'Satorix', # display name for this strategy
       strategy_class: "OmniAuth::Strategies::OAuth2Generic" # Devise-specific config option Gitlab uses to find renamed strategy
     }
   }
 ]
 ````
 
-Now if you visit "http://yourserver/auth/oauth2_generic", you should be directed to log in with your OAuth2 server.
+Now if you visit `http://yourserver/auth/oauth2_generic` (or `/auth/Satorix` for the custom name example), you should be directed to log in with your OAuth2 server.
 
 ## Configuration Options
 
