@@ -60,7 +60,7 @@ module OmniAuth
       def fetch_user_info(path)
         return nil unless path
         full_path = path.is_a?(Array) ? path : Array(user_paths[:root_path]) + [path]
-        full_path.inject(raw_info) { |info, key| info[key] if info.respond_to?(:[]) }
+        full_path.inject(raw_info) { |info, key| info[key] rescue nil }
       end
 
       def callback_url
