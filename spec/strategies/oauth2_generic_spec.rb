@@ -33,17 +33,25 @@ describe "OmniAuth::Strategies::OAuth2Generic" do
             redirect_url: 'https://my_server.com/oauth/callback',
             user_response_structure: {
               root_path: 'user',
-              attributes: {nickname: 'username'}
+              attributes: { nickname: 'username' }
+            },
+            authorize_params: {
+              custom_auth_param: ->(req) { req.params['a'] }
             }
-        run lambda { |env| [404, {"Content-Type" => "applocation/json"}, [env["omniauth.auth"].to_json]] }
+        run lambda { |env| [404, { "Content-Type" => "applocation/json" }, [env["omniauth.auth"].to_json]] }
       end.to_app
     end
 
     describe "the auth endpoint (/auth/{name})" do
-      before { get "/auth/custom" }
+      before { get "/auth/custom?a=42" }
 
       it "responds to the custom auth URL" do
         expect(last_response).to be_redirect
+      end
+
+      it "runs lambdas in authorize_params option and includes the result" do
+        redirect = URI.parse(last_response.headers["Location"])
+        expect(redirect.query).to include 'custom_auth_param=42'
       end
 
       it "redirects to the correct custom authorize URL" do
