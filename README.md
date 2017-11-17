@@ -4,13 +4,34 @@ By [Internet Exposure](https://www.iexposure.com/)
 
 This gem provides an OmniAuth strategy for authenticating with an OAuth2 service using the authorization grant flow.
 
+### Overview
 Most OmniAuth gems are written either as abstractions ([omniauth-oauth2](https://github.com/intridea/omniauth-oauth2)) or for a specific provider ([omniauth-github](https://github.com/intridea/omniauth-github)), but this one is designed to be configurable enough to work with any basic OAuth2 provider.  The primary differences between OAuth2 provider strategies in OmniAuth are:
  
  1. The server's domain
  2. The URL paths used to authorize, request tokens and get user info
  3. The structure of the returned user information
 
-These are all [configurable options](#configuration-options) in this gem.  There my be certain requirements/features of some providers not covered by this gem's options, but it was designed primarily so that if you are implementing your own OAuth2 provider for your service, you don't need to write an OmniAuth strategy as long as it is compatible with the basic options provided by this gem. 
+These are all [configurable options](#configuration-options) in this gem.
+There my be certain requirements/features of some providers not covered by this gem's options,
+but it was designed primarily so that if you are implementing your own OAuth2 provider for your service,
+you don't need to write an OmniAuth strategy as long as it is compatible with the basic options provided by this gem.
+ 
+#### General Use Case
+This strategy is designed to allow configuration of the simple OmniAuth SSO process outlined below:
+ 
+ 1. OmniAuth directs client to the authorization URL (**configurable**), with specified ID and key
+ 1. OAuth provider handles authentication of request, user, and (optionally) authorization of Application to access user's profile
+ 1. OAuth provider directs client back to the Application, and Strategy handles negotiation of access token
+ 1. Strategy requests user information from a **configurable** "user profile" URL
+ 1. Strategy parses user information from the response, using a **configurable** format
+ 1. OmniAuth returns the formatted user information
+ 
+ **Limitations of this Strategy:**
+ 
+ - It can only be used for Single Sign on, and will not provide any other access granted by any OAuth provider (such as importing projects or users, etc)
+ - It only supports the Authorization Grant flow (most common for client-server applications, like Rails apps)
+ - It is not able to fetch user information from more than one URL
+ - It has not been tested with user information formats other than JSON
 
 ## Installation
 
@@ -32,7 +53,10 @@ Include this gem in your client app [as you would any OmniAuth strategy](https:/
       "Your_OAuth_App_ID", "Your_OAuth_App_Secret",
       client_options: {
         site: 'https://your_oauth_server', # including port if necessary
-        user_info_url: '/api/path/to/fetch/current_user/info'
+        user_info_url: '/api/path/to/current_user/info'
+      },
+      user_response_structure: {
+        root_path: ['data', 'attributes'] # path to user attributes in JSON response
       },
       name: 'Satorix' # optional - custom name for the strategy (appears in URLs)
   end
@@ -57,6 +81,9 @@ Configuration options for this gem are:
 
   **Note:** Your OAuth server may restrict redirects to a specific list of URLs.
 * **name** - A String.  If set, this changes the name of the strategy used in the URLs and sometimes other places (the login button in Gitlab, for instance)
+* **authorize_params** - A hash of additional parameters to be sent to the OAuth provider on an authorization request (special keys, or IDs, etc)
+
+  **Note:** The values of this hash can be lambdas, which will be given the [rack request](http://www.rubydoc.info/gems/rack/Rack/Request) as a parameter
   
 The hash options have default values for all keys, and your provided configuration is merged into the default, so you do not have to re-specify nested default options (although you will need to provide at least `site` and `user_info_url` in `client_options`, unless you want to use the default/example gitlab.com configuration). 
 

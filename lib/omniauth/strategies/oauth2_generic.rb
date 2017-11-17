@@ -51,6 +51,11 @@ module OmniAuth
         @raw_info ||= access_token.get(options.client_options[:user_info_url]).parsed
       end
 
+      def authorize_params
+        params = super
+        Hash[params.map { |k, v| [k, v.respond_to?(:call) ? v.call(request) : v] }]
+      end
+
       private
 
       def user_paths
