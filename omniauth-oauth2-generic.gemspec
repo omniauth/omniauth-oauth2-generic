@@ -6,8 +6,8 @@ require 'omniauth-oauth2-generic/version'
 Gem::Specification.new do |spec|
   spec.name          = "omniauth-oauth2-generic"
   spec.version       = Omniauth::OAuth2Generic::VERSION
-  spec.authors       = ["Joe Marty"]
-  spec.email         = ["jmarty@iexposure.com"]
+  spec.authors       = ['Satorix']
+  spec.email         = ['satorix@iexposure.com']
 
   spec.summary       = %q{Generic, Configurable OmniAuth Strategy for OAuth2 providers}
   spec.description   = spec.summary

@@ -8,7 +8,7 @@ describe "OmniAuth::Strategies::OAuth2Generic" do
       Rack::Builder.new do
         use OmniAuth::Test::PhonySession
         use OmniAuth::Strategies::OAuth2Generic, "id123", "secretabc"
-        run lambda { |env| [404, {"Content-Type" => "text/plain"}, [env.key?("omniauth.auth").to_s]] }
+        run lambda { |env| [404, { "Content-Type" => "text/plain" }, [env.key?("omniauth.auth").to_s]] }
       end.to_app
     end
 
@@ -38,7 +38,7 @@ describe "OmniAuth::Strategies::OAuth2Generic" do
             authorize_params: {
               custom_auth_param: ->(req) { req.params['a'] }
             }
-        run lambda { |env| [404, { "Content-Type" => "applocation/json" }, [env["omniauth.auth"].to_json]] }
+        run lambda { |env| [404, { "Content-Type" => "application/json" }, [env["omniauth.auth"].to_json]] }
       end.to_app
     end
 
@@ -67,13 +67,13 @@ describe "OmniAuth::Strategies::OAuth2Generic" do
       before do
         # Stub custom token URL to return a stub token
         stub_request(:post, "https://custom.example.com/custom/token/path").
-          to_return(body: {access_token: :atoken}.to_json, headers: {'Content-Type' => 'application/json'})
+          to_return(body: { access_token: :atoken }.to_json, headers: { 'Content-Type' => 'application/json' })
         stub_request(:get, "https://custom.example.com/custom/user_info/path").
-          to_return(body: {user: {username: 'marty', id: 1}}.to_json, headers: {'Content-Type' => 'application/json'})
+          to_return(body: { user: { username: 'marty', id: 1 } }.to_json, headers: { 'Content-Type' => 'application/json' })
 
         # request the callback (which should request said stubbed token URL)
         get "/auth/custom/callback",
-            {:state => "Caulifornia"},
+            { :state => "Caulifornia" },
             "rack.session" => { "omniauth.state" => "Caulifornia" }
       end
 
@@ -92,7 +92,7 @@ describe "OmniAuth::Strategies::OAuth2Generic" do
       end
 
       it "parses user info correctly from the custom format" do
-        expect(result_auth_hash['info']).to include({'nickname' => 'marty'})
+        expect(result_auth_hash['info']).to include({ 'nickname' => 'marty' })
         expect(result_auth_hash['uid']).to eq '1'
       end
     end
