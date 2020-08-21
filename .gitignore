@@ -6,7 +6,6 @@
 /pkg/
 /spec/reports/
 /tmp/
-.ruby-version
 
 # Rubymine files
 /.idea
