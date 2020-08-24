@@ -1,0 +1,14 @@
+Layout/SpaceInsideStringInterpolation:
+  EnforcedStyle: space
+
+Layout/EmptyLinesAroundClassBody:
+  EnforcedStyle: empty_lines
+
+#Layout/EmptyLinesAroundBlockBody:
+#  Enabled: false
+#
+#Layout/EmptyLinesAroundModuleBody:
+#  Enabled: false
+
+Layout/EmptyLineBetweenDefs:
+  NumberOfEmptyLines: 2

@@ -1,11 +1,11 @@
+# frozen_string_literal: true
+
 module Satorix
   module CI
     module Test
       module CustomBundlerAudit
 
-
         include Satorix::Shared::Console
-
 
         extend self
 
