@@ -86,7 +86,7 @@ module OmniAuth
 
       def authorize_params
         params = super
-        Hash[params.map { |k, v| [k, v.respond_to?(:call) ? v.call(request) : v] }]
+        params.transform_values { |v| v.respond_to?(:call) ? v.call(request) : v }
       end
 
 
