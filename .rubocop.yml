@@ -1,14 +1,44 @@
+AllCops:
+  NewCops: enable
+
+# We develop in a higher version than is absolutely required.
+Gemspec/RequiredRubyVersion:
+  Enabled: false
+
 Layout/SpaceInsideStringInterpolation:
   EnforcedStyle: space
 
-Layout/EmptyLinesAroundClassBody:
-  EnforcedStyle: empty_lines
+# TODO - fix/enable layout lines cops ------------------------------------------------------
 
-#Layout/EmptyLinesAroundBlockBody:
-#  Enabled: false
-#
-#Layout/EmptyLinesAroundModuleBody:
-#  Enabled: false
+Layout/EmptyLines:
+  Enabled: false
+
+Layout/EmptyLinesAroundClassBody:
+  Enabled: false
+
+Layout/EmptyLinesAroundModuleBody:
+  Enabled: false
+
+# ------------------------------------------------------------------------------------------
 
 Layout/EmptyLineBetweenDefs:
   NumberOfEmptyLines: 2
+
+Layout/IndentationConsistency:
+  EnforcedStyle: indented_internal_methods
+
+# Ignore spec for large contexts
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+
+Naming/FileName:
+  Exclude:
+    - 'lib/omniauth-oauth2-generic.rb'
+
+Style/Documentation:
+  Enabled: false
+
+# The recommended alternative does not work for this application.
+Style/ModuleFunction:
+  Enabled: false

@@ -68,10 +68,9 @@ module OmniAuth
       end
 
       info do
-        user_paths[:attributes].inject({}) do |user_hash, (field, path)|
+        user_paths[:attributes].each_with_object({}) do |(field, path), user_hash|
           value = fetch_user_info(path)
           user_hash[field] = value if value
-          user_hash
         end
       end
 
@@ -101,8 +100,13 @@ module OmniAuth
 
         def fetch_user_info(path)
           return nil unless path
+
           full_path = path.is_a?(Array) ? path : Array(user_paths[:root_path]) + [path]
-          full_path.inject(raw_info) { |info, key| info[key] rescue nil }
+          full_path.inject(raw_info) do |info, key|
+            info[key]
+          rescue StandardError
+            nil
+          end
         end
 
 
