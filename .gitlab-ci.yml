@@ -15,7 +15,8 @@ cache:
 # bundler-audit
 # Patch-level verification for Bundler
 # https://github.com/rubysec/bundler-audit
-bundler_audit:
+# TODO : Restore original version
+custom_bundler_audit:
   <<: *satorix
 
 
