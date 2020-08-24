@@ -1,4 +1,6 @@
 AllCops:
+  Exclude:
+    - 'bin/**/*'
   NewCops: enable
 
 # We develop in a higher version than is absolutely required.
