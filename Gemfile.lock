@@ -3,6 +3,7 @@ PATH
   specs:
     omniauth-oauth2-generic (0.2.5)
       omniauth-oauth2 (~> 1.0)
+      rake
 
 GEM
   remote: https://rubygems.org/
@@ -63,7 +64,6 @@ DEPENDENCIES
   bundler
   omniauth-oauth2-generic!
   rack-test
-  rake
   rspec (~> 3.1)
   webmock
 
