@@ -28,7 +28,6 @@ module Satorix
 
           def build_gem
             Dir.chdir(Satorix.app_dir) do
-              run_command 'gem install rake'
               run_command 'bundle exec rake build'
             end
           end
