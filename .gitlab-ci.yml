@@ -15,7 +15,7 @@ cache:
 # bundler-audit
 # Patch-level verification for Bundler
 # https://github.com/rubysec/bundler-audit
-# TODO : Restore original version
+# TODO : Restore original version when https://github.com/omniauth/omniauth/pull/809 is resolved
 custom_bundler_audit:
   <<: *satorix
 
@@ -32,8 +32,6 @@ rspec:
 # https://github.com/bbatsov/rubocop
 rubocop:
   <<: *satorix
-  allow_failure: true
-
 
 
 # This is a custom job, defined at satorix/CI/deploy/rubygems.rb
