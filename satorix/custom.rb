@@ -12,6 +12,9 @@ module Satorix
 
     def available_jobs
       {
+        deploy: {
+          deploy_to_rubygems: Satorix::CI::Deploy::Rubygems
+        },
         test: {
           custom_bundler_audit: Satorix::CI::Test::CustomBundlerAudit
         }
