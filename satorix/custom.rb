@@ -4,6 +4,7 @@ module Satorix
   module Custom
 
     # Ensure the files required by the available_jobs method are available.
+    require_relative 'CI/deploy/rubygems.rb'
     require_relative 'CI/test/custom_bundler_audit'
 
 
