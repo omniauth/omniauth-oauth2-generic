@@ -2,6 +2,7 @@ AllCops:
   Exclude:
     - 'bin/**/*'
     - 'tmp/**/*'
+    - 'vendor/**/*'
   NewCops: enable
 
 # We develop in a higher version than is absolutely required.
