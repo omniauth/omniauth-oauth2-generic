@@ -36,11 +36,11 @@ rubocop:
 
 
 
-## This is a custom job, defined at satorix/CI/deploy/rubygems.rb
-#deploy_to_rubygems:
-#  stage: deploy
-#  only:
-#    - master
-#  except:
-#    - schedules
-#  <<: *satorix
+# This is a custom job, defined at satorix/CI/deploy/rubygems.rb
+deploy_to_rubygems:
+  stage: deploy
+  only:
+    - master
+  except:
+    - schedules
+  <<: *satorix
