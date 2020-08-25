@@ -1,13 +1,11 @@
 /.bundle/
 /.yardoc
-/Gemfile.lock
 /_yardoc/
 /coverage/
 /doc/
 /pkg/
 /spec/reports/
 /tmp/
-.ruby-version
 
 # Rubymine files
 /.idea

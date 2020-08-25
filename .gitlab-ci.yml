@@ -1,0 +1,46 @@
+image: 'satorix/base'
+
+cache:
+  key: "$CI_PROJECT_ID"
+  paths:
+    - 'tmp/satorix/cache' # To cache buildpack gems between runs.
+
+
+.satorix: &satorix
+  script:
+    - gem install satorix --no-document
+    - satorix
+
+
+# bundler-audit
+# Patch-level verification for Bundler
+# https://github.com/rubysec/bundler-audit
+# TODO : Restore original version
+custom_bundler_audit:
+  <<: *satorix
+
+
+# RSpec
+# Behaviour Driven Development for Ruby
+# http://rspec.info/
+rspec:
+  <<: *satorix
+
+
+# RuboCop
+# A Ruby static code analyzer, based on the community Ruby style guide.
+# https://github.com/bbatsov/rubocop
+rubocop:
+  <<: *satorix
+  allow_failure: true
+
+
+
+# This is a custom job, defined at satorix/CI/deploy/rubygems.rb
+deploy_to_rubygems:
+  stage: deploy
+  only:
+    - master
+  except:
+    - schedules
+  <<: *satorix
