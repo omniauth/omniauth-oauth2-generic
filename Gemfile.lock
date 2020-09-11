@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    omniauth-oauth2-generic (0.2.6)
+    omniauth-oauth2-generic (0.2.7)
       omniauth-oauth2 (~> 1.0)
       rake
 

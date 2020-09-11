@@ -38,7 +38,7 @@ rubocop:
 deploy_to_rubygems:
   stage: deploy
   only:
-    - master
+    - tags
   except:
     - schedules
   <<: *satorix
