@@ -103,9 +103,11 @@ module OmniAuth
 
           full_path = path.is_a?(Array) ? path : Array(user_paths[:root_path]) + [path]
           full_path.inject(raw_info) do |info, key|
-            info[key]
-          rescue StandardError
-            nil
+            begin # rubocop:disable Style/RedundantBegin
+              info[key]
+            rescue StandardError
+              nil
+            end
           end
         end
 
