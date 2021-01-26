@@ -5,12 +5,9 @@ module Satorix
     module Deploy
       module Rubygems
 
-
         require 'fileutils'
 
-
         include Satorix::Shared::Console
-
 
         extend self
 
@@ -28,7 +25,7 @@ module Satorix
 
           def build_gem
             Dir.chdir(Satorix.app_dir) do
-              run_command 'bundle exec rake build'
+              run_command(%w[bundle exec rake build])
             end
           end
 
@@ -54,13 +51,13 @@ module Satorix
 
 
           def prepare_gem_build_directory
-            run_command "rm -rf #{ gem_build_directory }"
+            run_command(['rm', '-rf', gem_build_directory])
             FileUtils.mkdir_p gem_build_directory
           end
 
 
           def publish_gem(gem)
-            run_command "gem push #{ gem } --config-file #{ File.join(Dir.home, '.gem', 'credentials') }"
+            run_command(['gem', 'push', gem, '--config-file', File.join(Dir.home, '.gem', 'credentials')])
           rescue RuntimeError
             # To prevent the display of an ugly stacktrace.
             abort "\nGem was not published!"
@@ -75,7 +72,6 @@ module Satorix
           def rubygems_configuration_file_contents
             "---\n:rubygems_api_key: #{ rubygems_api_key }"
           end
-
 
       end
     end
