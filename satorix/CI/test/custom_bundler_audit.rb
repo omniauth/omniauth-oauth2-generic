@@ -26,7 +26,7 @@ module Satorix
 
 
           def run_scan
-            run_command( %w[bundle-audit check --update --ignore CVE-2015-9284])
+            run_command(%w[bundle-audit check --update --ignore CVE-2015-9284])
           end
 
       end
